@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/arcarver/cse341-books"
+    "url": "git+https://github.com/arcarver/cse341-books.git"
   },
   "author": "Annie Carver",
   "type": "module",
