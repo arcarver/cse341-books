@@ -17,6 +17,11 @@ const startServer = async () => {
     try {
         await connectToDb();
 
+        // testing code 
+        console.log('--> Connected to Database:', getDb().databaseName);
+        console.log('--> Connected to Cluster Host:', getDb().client?.options?.hosts?.[0] || 'Localhost');
+
+        // end test code
         const books = await getDb().collection('books').find({}).toArray();
         console.log('Book documents:', books);
 
