@@ -1,4 +1,4 @@
-import { getAllBooks } from "../models/books";
+import { getAllBooks } from "../models/books.js";
 
 const getBooksHandler = async (req, res) => {
     try {

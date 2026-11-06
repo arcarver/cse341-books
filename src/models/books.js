@@ -1,4 +1,4 @@
-import { getDb } from "../db/connect";
+import { getDb } from "../db/connect.js";
 
 const getAllBooks = async () => {
     const db = getDb();
