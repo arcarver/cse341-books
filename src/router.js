@@ -2,7 +2,106 @@ import express from 'express';
 import { getBooksHandler, getBookByIdHandler } from "./controllers/books.js";
 
 const router = express.Router(); 
+
+/**
+ * @openapi
+ * /books:
+ *   get:
+ *     summary: Retrieve a list of books
+ *     description: Fetches all books available in the system library.
+ *     tags:
+ *       - Books
+ *     responses:
+ *       200:
+ *         description: A successful response containing an array of books.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: string
+ *                     description: The unique identifier of the book.
+ *                     example: "1"
+ *                   title:
+ *                     type: string
+ *                     description: The title of the book.
+ *                     example: "The Great Gatsby"
+ *                   author:
+ *                     type: string
+ *                     description: The author of the book.
+ *                     example: "F. Scott Fitzgerald"
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "An unexpected error occurred on the server."
+ */
 router.get('/books', getBooksHandler);
+
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   get:
+ *     summary: Get a book by its ID
+ *     description: Retrieves the detailed information of a single book using its unique ID.
+ *     tags:
+ *       - Books
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The unique identifier of the book to retrieve.
+ *         schema:
+ *           type: string
+ *         example: "1"
+ *     responses:
+ *       200:
+ *         description: Book details successfully retrieved.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   example: "1"
+ *                 title:
+ *                   type: string
+ *                   example: "The Great Gatsby"
+ *                 author:
+ *                   type: string
+ *                   example: "F. Scott Fitzgerald"
+ *       404:
+ *         description: The book with the specified ID was not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Book not found."
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error while fetching the book."
+ */
+
 router.get('/books/:id', getBookByIdHandler);
 
 export default router;
