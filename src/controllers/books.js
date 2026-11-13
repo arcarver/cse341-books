@@ -21,8 +21,8 @@ const getBookByIdHandler = async (req, res) => {
         return res.status(200).json(book);
     } catch (error) {
         console.error("GET /book/:id failed:", error.message);
-        return res.status(500).json({ messge: 'Internal server error' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 
-export { getBooksHandler, getBookByIdHandler}
+export { getBooksHandler, getBookByIdHandler };

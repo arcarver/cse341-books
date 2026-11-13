@@ -1,6 +1,15 @@
 import express from 'express';
 import { getBooksHandler, getBookByIdHandler } from "./controllers/books.js";
 
+import { Router } from 'express';
+import {
+  getAllAuthors,
+  getAuthorById,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor
+} from './controllers/authors.js';
+
 const router = express.Router(); 
 
 /**
@@ -45,6 +54,7 @@ const router = express.Router();
  *                   example: "An unexpected error occurred on the server."
  */
 router.get('/books', getBooksHandler);
+
 
 
 /**
@@ -103,5 +113,168 @@ router.get('/books', getBooksHandler);
  */
 
 router.get('/books/:id', getBookByIdHandler);
+
+/**
+ * @openapi
+ * /authors:
+ *   get:
+ *     summary: Get all authors
+ *     tags:
+ *       - Authors
+ *     responses:
+ *       200:
+ *         description: A list of authors
+ *       500:
+ *         description: Unable to retrieve authors
+ */
+
+router.get('/authors', getAllAuthors);
+
+
+/**
+ * @swagger
+ * /authors:
+ *   get:
+ *     summary: Return all authors
+ *     description: Retrieves a list of all author objects stored in the database.
+ *     responses:
+ *       200:
+ *         description: An array of author objects.
+ *       500:
+ *         description: Unable to retrieve authors due to an unexpected server or database error.
+ */
+router.get('/authors', getAllAuthors);
+
+/**
+ * @swagger
+ * /authors/{id}:
+ *   get:
+ *     summary: Return one author by custom id
+ *     description: Retrieves a specific author object matching the provided custom string identifier.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The custom string ID of the author (e.g., a1)
+ *     responses:
+ *       200:
+ *         description: The matching author object.
+ *       404:
+ *         description: Author not found.
+ *       500:
+ *         description: Unable to retrieve author due to an unexpected server or database error.
+ */
+router.get('/authors/:id', getAuthorById);
+
+/**
+ * @swagger
+ * /authors:
+ *   post:
+ *     summary: Create a new author
+ *     description: Validates and saves a brand new author document with custom string identifiers.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *               - name
+ *               - birthYear
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: Custom unique identifier for the author.
+ *               name:
+ *                 type: string
+ *                 description: Full name of the author.
+ *               birthYear:
+ *                 type: integer
+ *                 description: Year the author was born.
+ *           example:
+ *             id: "a4"
+ *             name: "Example Author"
+ *             birthYear: 1980
+ *     responses:
+ *       201:
+ *         description: The newly created author object.
+ *       400:
+ *         description: Missing required author fields OR author id already exists.
+ *       500:
+ *         description: Unable to create author due to an unexpected server or database error.
+ */
+router.post('/authors', createAuthor);
+
+/**
+ * @swagger
+ * /authors/{id}:
+ *   put:
+ *     summary: Update an existing author
+ *     description: Modifies an existing author object's payload matched by its custom string ID.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The custom string ID of the author to update.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - birthYear
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Updated name of the author.
+ *               birthYear:
+ *                 type: integer
+ *                 description: Updated birth year of the author.
+ *           example:
+ *             name: "Updated Author"
+ *             birthYear: 1981
+ *     responses:
+ *       200:
+ *         description: The updated author object.
+ *       400:
+ *         description: Missing required author fields.
+ *       404:
+ *         description: Author not found.
+ *       500:
+ *         description: Unable to update author due to an unexpected server or database error.
+ */
+router.put('/author/:id', updateAuthor);
+
+/**
+ * @swagger
+ * /authors/{id}:
+ *   delete:
+ *     summary: Delete an existing author
+ *     description: Removes an author document from the collection if they do not have any associated books.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The custom string ID of the author to delete.
+ *     responses:
+ *       204:
+ *         description: Author successfully deleted. No response body.
+ *       404:
+ *         description: Author not found.
+ *       409:
+ *         description: Author cannot be deleted because they still have books.
+ *       500:
+ *         description: Unable to delete author due to an unexpected server or database error.
+ */
+router.delete('/authors/:id', deleteAuthor);
 
 export default router;
