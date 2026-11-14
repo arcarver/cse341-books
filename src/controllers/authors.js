@@ -47,7 +47,7 @@ const createAuthor = async (req, res) => {
         const createAuthor = await createAuthorFromDb({ id, name, birthYear });
         return res.status(201).json(createdAuthor);
     } catch (error) {
-        return res.status(500).json({ message: 'Unable to creat author.' });
+        return res.status(500).json({ message: 'Unable to create author.' });
     }
 };
 
